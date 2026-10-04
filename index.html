@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MAUSAM - 8 Smart Lifestyles & Weather AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0B111E;
+      --surface: #141D2E;
+      --surface-variant: #1E293B;
+      --card-bg: rgba(22, 32, 54, 0.95);
+      --card-border: rgba(56, 189, 248, 0.18);
+      --primary: #38BDF8;
+      --primary-dark: #0284C7;
+      --accent: #6366F1;
+      --purple: #A855F7;
+      --green: #22C55E;
+      --orange: #F97316;
+      --red: #EF4444;
+      --yellow: #FACC15;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Tamil', sans-serif;
+      background-color: #050811;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0;
+    }
+
+    /* Top Download Bar */
+    .download-banner {
+      width: 100%;
+      background: linear-gradient(90deg, #0284C7, #6366F1);
+      color: white;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 100;
+    }
+
+    .download-btn {
+      background: #FFFFFF;
+      color: #0284C7;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 12px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Mobile Phone Shell */
+    .app-viewport {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background-color: var(--bg);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 40px rgba(0,0,0,0.6);
+    }
+
+    /* Header Bar */
+    .header-bar {
+      padding: 16px 16px 10px;
+      background: rgba(11, 17, 30, 0.95);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .header-row-1 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .app-title {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      color: var(--primary);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lang-btn {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--primary);
+      padding: 4px 10px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .alert-btn {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: var(--red);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .location-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .location-name {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Main Content Area */
+    .content-area {
+      flex: 1;
+      padding: 14px 16px 85px;
+      overflow-y: auto;
+    }
+
+    /* Severe Alert Banner */
+    .alert-banner {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--red);
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      cursor: pointer;
+    }
+
+    /* Main Hero Weather Card */
+    .hero-card {
+      background: linear-gradient(135deg, #0284C7, #0369A1, #1E3A8A);
+      border-radius: 24px;
+      padding: 20px;
+      color: white;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.35);
+      margin-bottom: 14px;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hero-cond {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .hero-feels {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .hero-temp-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin: 12px 0;
+    }
+
+    .hero-temp {
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .hero-unit {
+      font-size: 24px;
+      font-weight: 700;
+      opacity: 0.8;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 12px;
+      text-align: center;
+    }
+
+    .metric-item small {
+      display: block;
+      font-size: 10px;
+      opacity: 0.75;
+      text-transform: uppercase;
+    }
+
+    .metric-item span {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* Insight Card */
+    .insight-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .insight-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .insight-body {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #CBD5E1;
+    }
+
+    /* Section Header */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 16px 0 10px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .section-action {
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Lifestyle Scroll Row */
+    .lifestyle-row {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+
+    .lifestyle-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .lifestyle-card {
+      min-width: 140px;
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 12px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .lifestyle-card:hover {
+      border-color: var(--primary);
+    }
+
+    .lifestyle-card h5 {
+      font-size: 13px;
+      font-weight: 700;
+      margin: 4px 0 2px;
+    }
+
+    .lifestyle-card .metric {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .lifestyle-card .subtext {
+      font-size: 10.5px;
+      color: var(--text-muted);
+    }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 480px;
+      background: rgba(11, 17, 30, 0.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 4px 14px;
+      z-index: 50;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    .nav-icon {
+      font-size: 18px;
+    }
+
+    /* Screen Views */
+    .tab-view {
+      display: none;
+    }
+
+    .tab-view.active {
+      display: block;
+    }
+
+    /* Buttons */
+    .btn-action {
+      background: linear-gradient(135deg, var(--primary-dark), var(--accent));
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    /* Chat View */
+    .chat-bubble {
+      padding: 12px 14px;
+      border-radius: 16px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+      max-width: 85%;
+    }
+
+    .chat-user {
+      background: var(--primary-dark);
+      color: white;
+      align-self: flex-end;
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-bot {
+      background: var(--surface);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-input-bar {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 10px 16px;
+      color: white;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .mic-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: none;
+      color: #0B111E;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Direct APK Download Header -->
+  <div class="download-banner">
+    <span>📱 MAUSAM Native Android App</span>
+    <a href="/app-debug.apk" download="MAUSAM-Weather-App.apk" class="download-btn">
+      ⬇️ Download APK (24MB)
+    </a>
+  </div>
+
+  <div class="app-viewport">
+    
+    <!-- Header -->
+    <header class="header-bar">
+      <div class="header-row-1">
+        <span class="app-title">MAUSAM</span>
+        <div class="header-actions">
+          <button class="lang-btn" id="langToggleBtn" onclick="cycleLanguage()">🇮🇳 தமிழ்</button>
+          <button class="alert-btn" onclick="switchTab('alerts')">🔔</button>
+        </div>
+      </div>
+      <div class="location-row" onclick="changeLocation()">
+        <span>📍</span>
+        <span class="location-name" id="locText">Madurai, Tamil Nadu</span>
+        <small>▼</small>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <main class="content-area">
+
+      <!-- ================= 1. HOME TAB ================= -->
+      <section id="tab-home" class="tab-view active">
+        
+        <!-- Severe Alert Banner -->
+        <div class="alert-banner" onclick="switchTab('alerts')">
+          <span style="font-size: 20px;">🚨</span>
+          <div>
+            <div style="font-size: 12px; font-weight: 800; color: var(--red);" id="txtAlertTitle">அதிதீவிர கனமழை எச்சரிக்கை (Red Alert)</div>
+            <div style="font-size: 11px; color: var(--text-muted);" id="txtAlertDesc">அடுத்த 3 மணிநேரத்தில் கனமழை எதிர்பார்க்கப்படுகிறது.</div>
+          </div>
+        </div>
+
+        <!-- Main Hero Card -->
+        <div class="hero-card">
+          <div class="hero-top">
+            <div>
+              <div class="hero-cond" id="txtCondition">Partly Cloudy</div>
+              <div class="hero-feels" id="txtFeels">உணர்வது (Feels like) 31°C</div>
+            </div>
+            <div style="font-size: 42px;">🌤️</div>
+          </div>
+          <div class="hero-temp-row">
+            <span class="hero-temp">29°</span>
+            <span class="hero-unit">C</span>
+          </div>
+          <div class="hero-metrics">
+            <div class="metric-item">
+              <small id="txtHumLabel">ஈரப்பதம்</small>
+              <span>64%</span>
+            </div>
+            <div class="metric-item">
+              <small id="txtWindLabel">காற்று</small>
+              <span>16 km/h</span>
+            </div>
+            <div class="metric-item">
+              <small id="txtUvLabel">UV குறியீடு</small>
+              <span>6.4</span>
+            </div>
+            <div class="metric-item">
+              <small>மழை</small>
+              <span>20%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAUSAM AI Insight -->
+        <div class="insight-card">
+          <div class="insight-title">
+            <span>🧠</span>
+            <span id="txtAiInsightTitle">வானிலை நுண்ணறிவு (MAUSAM AI Insight)</span>
+          </div>
+          <div class="insight-body" id="txtAiInsightBody">
+            மதுரை மற்றும் சுற்றுப்புறங்களில் இன்று பிற்பகலில் மிதமான மேகமூட்டமும் மாலை வேளையில் லேசான மழையும் பெய்ய வாய்ப்புள்ளது. நெடுஞ்சாலை பயணத்திற்கு உகந்த நேரம் காலை 7 முதல் 11 மணி வரை.
+          </div>
+        </div>
+
+        <!-- 8 Lifestyles Section -->
+        <div class="section-header">
+          <span class="section-title" id="txtLifestyleTitle">✨ உங்கள் 8 வாழ்க்கை முறை வழிகாட்டல்</span>
+          <span class="section-action" onclick="switchTab('lifestyle')">View All</span>
+        </div>
+
+        <div class="lifestyle-row">
+          <div class="lifestyle-card" onclick="switchTab('lifestyle')">
+            <span>❤️</span>
+            <h5>உடல்நலம்</h5>
+            <div class="metric">AQI 38 • Good</div>
+            <div class="subtext">Comfort: 86/100</div>
+          </div>
+          <div class="lifestyle-card" onclick="switchTab('lifestyle')">
+            <span>🏃</span>
+            <h5>உடற்பயிற்சி</h5>
+            <div class="metric">88/100 Comfort</div>
+            <div class="subtext">Best: 6:00 - 7:30 AM</div>
+          </div>
+          <div class="lifestyle-card" onclick="switchTab('travel')">
+            <span>✈️</span>
+            <h5>நெடுஞ்சாலை</h5>
+            <div class="metric">Dry Road • Safe</div>
+            <div class="subtext">GPS Route Active</div>
+          </div>
+          <div class="lifestyle-card" onclick="switchTab('beach')">
+            <span>🏖️</span>
+            <h5>கடற்கரை</h5>
+            <div class="metric">Calm Surf • 0.9m</div>
+            <div class="subtext">Wind: 14 km/h</div>
+          </div>
+          <div class="lifestyle-card" onclick="switchTab('crops')">
+            <span>🌱</span>
+            <h5>பயிர் பாதுகாப்பு</h5>
+            <div class="metric">Favorable</div>
+            <div class="subtext">Check drainage</div>
+          </div>
+        </div>
+
+        <!-- Quick Action Button to Open Google Maps Travel -->
+        <button class="btn-action" onclick="switchTab('travel')">
+          <span>🚗</span>
+          <span id="txtPlanTravelBtn">பயணம் & வானிலை பாதை (Plan Route)</span>
+        </button>
+
+      </section>
+
+      <!-- ================= 2. LIFESTYLE TAB ================= -->
+      <section id="tab-lifestyle" class="tab-view">
+        <h3 style="margin-bottom: 12px;">🎯 8 Smart Lifestyles Hub</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+          Atmospheric intelligence personalized across 8 aspects of daily life.
+        </p>
+
+        <div class="insight-card">
+          <h4>❤️ Health & Air Quality</h4>
+          <p style="font-size: 12.5px; color: #CBD5E1; margin: 6px 0;">AQI is 38 (Clean atmospheric air). Low pollen levels. Safe for respiratory comfort.</p>
+          <small style="color: var(--green); font-weight: 700;">Score: 92/100 Excellent</small>
+        </div>
+
+        <div class="insight-card">
+          <h4>🏃 Fitness & Running</h4>
+          <p style="font-size: 12.5px; color: #CBD5E1; margin: 6px 0;">Optimal morning jog window: 6:00 AM - 7:30 AM. Low thermal stress.</p>
+          <small style="color: var(--primary); font-weight: 700;">Score: 88/100 Highly Recommended</small>
+        </div>
+
+        <div class="insight-card">
+          <h4>🏖️ Coastal Beach & Surf</h4>
+          <p style="font-size: 12.5px; color: #CBD5E1; margin: 6px 0;">Wave swell: 0.9m. Mild rip current. Safe swimming until 11:30 AM.</p>
+          <small style="color: var(--orange); font-weight: 700;">Safe Swell Window Open</small>
+        </div>
+
+        <div class="insight-card">
+          <h4>✈️ Highway Travel</h4>
+          <p style="font-size: 12.5px; color: #CBD5E1; margin: 6px 0;">NH-44 / NH-45 dry surface grip. Traffic flow normal with clear visibility.</p>
+          <small style="color: var(--primary); font-weight: 700;">Distance & Route Calculated</small>
+        </div>
+
+        <div class="insight-card">
+          <h4>🌱 Agriculture & Crops</h4>
+          <p style="font-size: 12.5px; color: #CBD5E1; margin: 6px 0;">Favorable soil moisture. Maintain field drainage channels ahead of evening showers.</p>
+          <small style="color: var(--green); font-weight: 700;">Low Crop Blight Risk</small>
+        </div>
+      </section>
+
+      <!-- ================= 3. FORECAST TAB ================= -->
+      <section id="tab-forecast" class="tab-view">
+        <h3 style="margin-bottom: 14px;">🌤️ 7-Day & Hourly Forecast</h3>
+        
+        <div class="insight-card">
+          <h4>Hourly Progression</h4>
+          <div style="display: flex; justify-content: space-between; margin-top: 10px; text-align: center; font-size: 12px;">
+            <div>6 AM<br><strong>24°C</strong><br>🌤️</div>
+            <div>9 AM<br><strong>28°C</strong><br>☀️</div>
+            <div>12 PM<br><strong>32°C</strong><br>☀️</div>
+            <div>3 PM<br><strong>31°C</strong><br>⛅</div>
+            <div>6 PM<br><strong>27°C</strong><br>🌧️</div>
+            <div>9 PM<br><strong>25°C</strong><br>☁️</div>
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <h4>7-Day Outlook</h4>
+          <div style="margin-top: 10px; font-size: 13px; line-height: 2;">
+            <div style="display:flex; justify-content:space-between;"><span>Today</span><span>🌤️ 29° / 23°</span></div>
+            <div style="display:flex; justify-content:space-between;"><span>Tomorrow</span><span>🌧️ 28° / 22°</span></div>
+            <div style="display:flex; justify-content:space-between;"><span>Wednesday</span><span>☀️ 31° / 24°</span></div>
+            <div style="display:flex; justify-content:space-between;"><span>Thursday</span><span>⛅ 30° / 23°</span></div>
+            <div style="display:flex; justify-content:space-between;"><span>Friday</span><span>🌦️ 29° / 22°</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 4. CROPS TAB ================= -->
+      <section id="tab-crops" class="tab-view">
+        <h3 style="margin-bottom: 12px;">🌱 Smart Agriculture & Crop Protection</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+          Hyperlocal soil moisture telemetry, pest forecasting, and camera field photo diagnosis.
+        </p>
+
+        <div class="insight-card" style="text-align: center; padding: 24px;">
+          <div style="font-size: 40px; margin-bottom: 8px;">📷</div>
+          <h4>Upload Field / Crop Photo</h4>
+          <p style="font-size: 12px; color: var(--text-muted); margin: 6px 0 14px;">
+            Analyze crop leaves for fungus, waterlogging, or pest infestation.
+          </p>
+          <input type="file" id="cropFileInput" accept="image/*" style="display: none;" onchange="cropPhotoSelected()">
+          <button class="btn-action" onclick="document.getElementById('cropFileInput').click()">
+            <span>📸</span> Take / Select Crop Photo
+          </button>
+          <div id="cropResult" style="display: none; margin-top: 14px; font-size: 13px; color: var(--green); font-weight: 700;">
+            ✅ Crop Health: 94% Healthy Paddy. Fungal risk low.
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 5. TRAVEL TAB ================= -->
+      <section id="tab-travel" class="tab-view">
+        <h3 style="margin-bottom: 12px;">✈️ Smart Travel & Route Weather</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+          Shortest highway path, traffic conditions, and weather checkpoints.
+        </p>
+
+        <div class="insight-card">
+          <div style="margin-bottom: 10px;">
+            <small style="color: var(--primary); font-weight: 700;">FROM (Source)</small>
+            <div style="font-weight: 700; font-size: 14px;">Madurai, Tamil Nadu</div>
+          </div>
+          <div style="margin-bottom: 14px;">
+            <small style="color: var(--orange); font-weight: 700;">TO (Destination)</small>
+            <div style="font-weight: 700; font-size: 14px;">Chennai, Tamil Nadu</div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; font-size: 12px;">
+            <div>Distance: <strong>462 km</strong></div>
+            <div>Time: <strong>7h 15m</strong></div>
+            <div>Rain Risk: <strong style="color: var(--green);">22% Low</strong></div>
+          </div>
+
+          <button class="btn-action" onclick="openGoogleMaps()">
+            <span>🗺️</span> Open in Google Maps & Live Traffic
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= 6. BEACH TAB ================= -->
+      <section id="tab-beach" class="tab-view">
+        <h3 style="margin-bottom: 12px;">🏖️ Coastal Beaches & Surf Safety</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+          Wave swell heights, rip current risks, and safe swimming timeframes.
+        </p>
+
+        <div class="insight-card">
+          <h4>Marina Beach, Chennai</h4>
+          <p style="font-size: 12px; color: var(--text-muted);">Wave: 0.9m • Wind: 16 km/h • Safe Swell</p>
+          <div style="color: var(--green); font-weight: 700; font-size: 13px; margin-top: 6px;">
+            🏊 Safe to Swim: 6:00 AM - 11:30 AM
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <h4>Kovalam Beach, ECR</h4>
+          <p style="font-size: 12px; color: var(--text-muted);">Wave: 1.2m • Wind: 18 km/h • Moderate Surf</p>
+          <div style="color: var(--primary); font-weight: 700; font-size: 13px; margin-top: 6px;">
+            🏄 Good for Surfing with Lifeguard
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 7. ASK AI CHATBOT TAB ================= -->
+      <section id="tab-ask" class="tab-view">
+        <h3 style="margin-bottom: 6px;">🤖 Ask MAUSAM AI Assistant</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
+          Voice speech recognition and audio speech synthesis in Tamil, Tanglish & English.
+        </p>
+
+        <div id="chatMessages" style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="chat-bubble chat-bot">
+            வணக்கம்! நான் MAUSAM AI. இன்றைய வானிலை, மழை வாய்ப்பு, அல்லது உங்கள் பயணத்தைப் பற்றி கேளுங்கள்!
+          </div>
+        </div>
+
+        <div class="chat-input-bar">
+          <input type="text" id="userMsgInput" class="chat-input" placeholder="Type or click mic to speak..." onkeypress="handleEnter(event)">
+          <button class="mic-btn" onclick="startVoiceRecognition()">🎙️</button>
+          <button class="mic-btn" style="background: var(--accent); color: white;" onclick="sendUserMessage()">➤</button>
+        </div>
+      </section>
+
+      <!-- ================= 8. ALERTS TAB ================= -->
+      <section id="tab-alerts" class="tab-view">
+        <h3 style="margin-bottom: 12px;">🚨 Emergency Alerts & Notifications</h3>
+        
+        <div class="insight-card" style="border-color: var(--red);">
+          <h4 style="color: var(--red);">🚨 Heavy Torrential Rain & Flood Warning</h4>
+          <p style="font-size: 12.5px; color: #CBD5E1; margin: 6px 0;">
+            Active thunderstorm alert for low-lying coastal and highway zones. Avoid unnecessary two-wheeler transit.
+          </p>
+          <button class="btn-action" style="background: var(--red);" onclick="triggerWebNotification()">
+            🔔 Trigger Emergency Push Alert Now
+          </button>
+        </div>
+
+        <div class="insight-card">
+          <h4>📡 Smart Offline Preparedness Guide</h4>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">
+            • Maintain tire grip distances on wet asphalt.<br>
+            • Avoid electric poles & tall isolated trees in thunderstorms.<br>
+            • Clear agricultural field drainage bunds immediately.
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar (7 Tabs) -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" onclick="switchTab('home')">
+        <span class="nav-icon">🏠</span>
+        <span id="navHome">Home</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('lifestyle')">
+        <span class="nav-icon">🎯</span>
+        <span id="navLife">Lifestyle</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('forecast')">
+        <span class="nav-icon">🌤️</span>
+        <span id="navCast">Forecast</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('crops')">
+        <span class="nav-icon">🌱</span>
+        <span id="navCrops">Crops</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('travel')">
+        <span class="nav-icon">✈️</span>
+        <span id="navTravel">Travel</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('beach')">
+        <span class="nav-icon">🏖️</span>
+        <span id="navBeach">Beach</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('ask')">
+        <span class="nav-icon">💬</span>
+        <span id="navAsk">Ask</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <script>
+    // Language State
+    let currentLang = 'TA'; // 'TA', 'TANGLISH', 'EN'
+
+    function cycleLanguage() {
+      if (currentLang === 'TA') {
+        currentLang = 'TANGLISH';
+        document.getElementById('langToggleBtn').innerText = '🗣️ Tanglish';
+        applyTanglish();
+      } else if (currentLang === 'TANGLISH') {
+        currentLang = 'EN';
+        document.getElementById('langToggleBtn').innerText = '🇬🇧 English';
+        applyEnglish();
+      } else {
+        currentLang = 'TA';
+        document.getElementById('langToggleBtn').innerText = '🇮🇳 தமிழ்';
+        applyTamil();
+      }
+    }
+
+    function applyTamil() {
+      document.getElementById('txtFeels').innerText = 'உணர்வது (Feels like) 31°C';
+      document.getElementById('txtHumLabel').innerText = 'ஈரப்பதம்';
+      document.getElementById('txtWindLabel').innerText = 'காற்று';
+      document.getElementById('txtUvLabel').innerText = 'UV குறியீடு';
+      document.getElementById('txtAiInsightTitle').innerText = 'வானிலை நுண்ணறிவு (MAUSAM AI Insight)';
+      document.getElementById('txtAiInsightBody').innerText = 'மதுரை மற்றும் சுற்றுப்புறங்களில் இன்று பிற்பகலில் மிதமான மேகமூட்டமும் மாலை வேளையில் லேசான மழையும் பெய்ய வாய்ப்புள்ளது. நெடுஞ்சாலை பயணத்திற்கு உகந்த நேரம் காலை 7 முதல் 11 மணி வரை.';
+      document.getElementById('txtLifestyleTitle').innerText = '✨ உங்கள் 8 வாழ்க்கை முறை வழிகாட்டல்';
+      document.getElementById('txtPlanTravelBtn').innerText = 'பயணம் & வானிலை பாதை (Plan Route)';
+      document.getElementById('navHome').innerText = 'முகப்பு';
+      document.getElementById('navLife').innerText = 'வாழ்க்கை';
+      document.getElementById('navCast').innerText = 'வானிலை';
+      document.getElementById('navCrops').innerText = 'பயிர்';
+      document.getElementById('navTravel').innerText = 'பயணம்';
+      document.getElementById('navBeach').innerText = 'கடற்கரை';
+      document.getElementById('navAsk').innerText = 'கேளுங்கள்';
+    }
+
+    function applyTanglish() {
+      document.getElementById('txtFeels').innerText = 'Feels like 31°C';
+      document.getElementById('txtHumLabel').innerText = 'Humidity';
+      document.getElementById('txtWindLabel').innerText = 'Wind';
+      document.getElementById('txtUvLabel').innerText = 'UV Index';
+      document.getElementById('txtAiInsightTitle').innerText = 'MAUSAM AI Insight';
+      document.getElementById('txtAiInsightBody').innerText = 'Madurai-la innaiku afternoon cloudiness irukum, evening mild rain chance irukku. Highway travel-ku morning 7 to 11 AM best time.';
+      document.getElementById('txtLifestyleTitle').innerText = '✨ 8 Smart Lifestyles Hub';
+      document.getElementById('txtPlanTravelBtn').innerText = 'Plan Travel & Route Weather';
+      document.getElementById('navHome').innerText = 'Home';
+      document.getElementById('navLife').innerText = 'Lifestyle';
+      document.getElementById('navCast').innerText = 'Forecast';
+      document.getElementById('navCrops').innerText = 'Crops';
+      document.getElementById('navTravel').innerText = 'Travel';
+      document.getElementById('navBeach').innerText = 'Beach';
+      document.getElementById('navAsk').innerText = 'Ask';
+    }
+
+    function applyEnglish() {
+      document.getElementById('txtFeels').innerText = 'Feels like 31°C';
+      document.getElementById('txtHumLabel').innerText = 'Humidity';
+      document.getElementById('txtWindLabel').innerText = 'Wind';
+      document.getElementById('txtUvLabel').innerText = 'UV Index';
+      document.getElementById('txtAiInsightTitle').innerText = 'MAUSAM AI Insight';
+      document.getElementById('txtAiInsightBody').innerText = 'Mild daytime cloud cover with isolated evening showers expected across the region. Optimum window for highway transit is 7:00 AM - 11:00 AM.';
+      document.getElementById('txtLifestyleTitle').innerText = '✨ Your 8 Lifestyle Insights';
+      document.getElementById('txtPlanTravelBtn').innerText = 'Plan Route & Checkpoints';
+      document.getElementById('navHome').innerText = 'Home';
+      document.getElementById('navLife').innerText = 'Lifestyle';
+      document.getElementById('navCast').innerText = 'Forecast';
+      document.getElementById('navCrops').innerText = 'Crops';
+      document.getElementById('navTravel').innerText = 'Travel';
+      document.getElementById('navBeach').innerText = 'Beach';
+      document.getElementById('navAsk').innerText = 'Ask';
+    }
+
+    // Tab Navigation
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById('tab-' + tabId);
+      if (target) {
+        target.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      const tabs = ['home', 'lifestyle', 'forecast', 'crops', 'travel', 'beach', 'ask'];
+      const index = tabs.indexOf(tabId);
+      if (index !== -1) {
+        document.querySelectorAll('.nav-item')[index].classList.add('active');
+      }
+    }
+
+    // Google Maps Navigation Intent
+    function openGoogleMaps() {
+      window.open('https://www.google.com/maps/dir/?api=1&origin=Madurai&destination=Chennai&travelmode=driving', '_blank');
+    }
+
+    // Crop Photo Upload Simulation
+    function cropPhotoSelected() {
+      document.getElementById('cropResult').style.display = 'block';
+    }
+
+    // Emergency Notification
+    function triggerWebNotification() {
+      if ('Notification' in window) {
+        Notification.requestPermission().then(permission => {
+          if (permission === 'granted') {
+            new Notification('🚨 MAUSAM Red Alert', {
+              body: 'Intense rain & thunderstorm advisory approaching your locality. Take safe shelter!',
+              icon: 'https://cdn-icons-png.flaticon.com/512/1146/1146869.png'
+            });
+          }
+        });
+      }
+      alert('🚨 EMERGENCY ALERT ACTIVATED!\nSevere storm advisory triggered with sound & vibration alert.');
+    }
+
+    // Voice Chatbot
+    function sendUserMessage() {
+      const input = document.getElementById('userMsgInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const container = document.getElementById('chatMessages');
+
+      // User Bubble
+      const userBubble = document.createElement('div');
+      userBubble.className = 'chat-bubble chat-user';
+      userBubble.innerText = text;
+      container.appendChild(userBubble);
+      input.value = '';
+
+      // AI Answer
+      setTimeout(() => {
+        const botBubble = document.createElement('div');
+        botBubble.className = 'chat-bubble chat-bot';
+        
+        let reply = '';
+        if (text.toLowerCase().includes('mazhai') || text.toLowerCase().includes('rain') || text.includes('மழை')) {
+          reply = 'இன்று மாலை 5 மணி முதல் 8 மணி வரை மிதமான மழை பெய்ய வாய்ப்புள்ளது (65% chance). வெளியே செல்லும்போது குடை எடுத்துச் செல்லவும்!';
+        } else if (text.toLowerCase().includes('travel') || text.includes('பயணம்')) {
+          reply = 'சென்னை - மதுரை நெடுஞ்சாலையில் சாலை உலர்வாக உள்ளது. மழை வாய்ப்பு குறைவு. வேகம் 80-90 km/h பாதுகாப்பானது.';
+        } else {
+          reply = 'இன்றைய வெப்பநிலை 29°C. இதமான காற்று மற்றும் நல்ல காற்றின் தரம் (AQI 38) நிலவுகிறது!';
+        }
+        
+        botBubble.innerText = reply;
+        container.appendChild(botBubble);
+        speakText(reply);
+        container.scrollTop = container.scrollHeight;
+      }, 500);
+    }
+
+    function handleEnter(e) {
+      if (e.key === 'Enter') sendUserMessage();
+    }
+
+    // Web Speech Recognition
+    function startVoiceRecognition() {
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.lang = currentLang === 'TA' ? 'ta-IN' : 'en-IN';
+        recognition.onresult = function(event) {
+          const transcript = event.results[0][0].transcript;
+          document.getElementById('userMsgInput').value = transcript;
+          sendUserMessage();
+        };
+        recognition.start();
+      } else {
+        alert('Voice speech recognition is active. Type your question or use Chrome on Android.');
+      }
+    }
+
+    // Text to Speech
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = currentLang === 'TA' ? 'ta-IN' : 'en-IN';
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function changeLocation() {
+      const newLoc = prompt('Enter Location (District / Locality):', 'Coimbatore');
+      if (newLoc) {
+        document.getElementById('locText').innerText = newLoc + ', Tamil Nadu';
+      }
+    }
+  </script>
+</body>
+</html>

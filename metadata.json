@@ -1,0 +1,6 @@
+{
+  "name": "MAUSAM",
+  "description": "Weather that fits your life. Personal weather companion with lifestyle insights, crop risk, travel routes, and coastal safety.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
