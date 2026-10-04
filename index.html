@@ -460,7 +460,7 @@
   <!-- Direct APK Download Header -->
   <div class="download-banner">
     <span>📱 MAUSAM Native Android App</span>
-    <a href="/app-debug.apk" download="MAUSAM-Weather-App.apk" class="download-btn">
+    <a href="/app-debug.apk" download="MAUSAM-Weather-App.apk" class="download-btn" onclick="apkDownloadTriggered()">
       ⬇️ Download APK (24MB)
     </a>
   </div>
@@ -999,6 +999,13 @@
       if (newLoc) {
         document.getElementById('locText').innerText = newLoc + ', Tamil Nadu';
       }
+    }
+
+    function apkDownloadTriggered() {
+      const msg = currentLang === 'TA' 
+        ? '📥 APK டவுன்லோடு தொடங்குகிறது! உங்கள் பிரவுசரின் Downloads செக் செய்து இன்ஸ்டால் செய்யவும்.'
+        : '📥 APK Download Started! Check your browser downloads notification. Once downloaded, tap to install.';
+      setTimeout(() => { alert(msg); }, 300);
     }
   </script>
 </body>
